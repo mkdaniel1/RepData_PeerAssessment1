@@ -10,8 +10,7 @@ output:
 ## Loading and preprocessing the data
 
 ```r
-zipF<- "activity.zip"
-unzip(zipF)
+unzip("activity.zip")
 active_data <- read.csv("activity.csv", header = TRUE, na.strings = TRUE)
 summary(active_data)
 ```

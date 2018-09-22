@@ -127,8 +127,7 @@ $(document).ready(function () {
 
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
-<pre class="r"><code>zipF&lt;- &quot;activity.zip&quot;
-unzip(zipF)
+<pre class="r"><code>unzip(&quot;activity.zip&quot;)
 active_data &lt;- read.csv(&quot;activity.csv&quot;, header = TRUE, na.strings = TRUE)
 summary(active_data)</code></pre>
 <pre><code>##      steps               date          interval     
