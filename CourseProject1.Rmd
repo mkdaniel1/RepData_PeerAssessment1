@@ -1,0 +1,16 @@
+---
+title: "CourseProject1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Unzip and read in data into data frame active_data
+```{r read_data}
+zipF<- "activity.zip"
+unzip(zipF)
+active_data <- read.csv("activity.csv", header = TRUE, na.strings = TRUE)
+summary(active_data)
+```
