@@ -7,18 +7,38 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(scales)
 ```
 
 ## Loading and preprocessing the data
 ```{r read_data}
 unzip("activity.zip")
-active_data <- read.csv("activity.csv", header = TRUE, na.strings = TRUE)
+active_data <- read.csv("activity.csv", header = TRUE, stringsAsFactors=FALSE)
+active_data$date <-  as.POSIXct(active_data$date, format="%Y-%m-%d")
+dayofweek <- weekdays(active_data$date)
+active_data <- cbind(active_data, dayofweek)
 summary(active_data)
+head(active_data)
 ```
 
 
 ## What is mean total number of steps taken per day?
 
+### Calculate the number of steps per day
+```{r daily_step}
+all_steps <- active_data %>% group_by(date) %>% summarise (daily_steps = sum(steps,na.rm=TRUE))
+head(all_steps)
+```
+
+## Plot number of steps per day
+```{r plot_steps}
+barplot(height = all_steps$daily_steps, names.arg=all_steps$date, cex.names=0.60, las=3, col = "green")
+abline(h=median(all_steps$daily_steps),lwd=3, col="blue")
+abline(h=mean(all_steps$daily_steps),lwd=3, col="red")
+legend("top",  c("blue","red"), c("median", "mean"), fill = c("blue", "red"))
+```
 
 
 ## What is the average daily activity pattern?
