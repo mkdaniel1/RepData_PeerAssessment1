@@ -143,4 +143,49 @@ missingvalues <- sum(is.na(active_data$steps))
 ```
 The total number of missing values in the dataset is 2304.
 
+### Devise a strategy for filling in all of the missing values in the dataset.
+Create average template for all interval of the day.  Use the template to fill in any blanks for missing values.
+
+```r
+#library(impute)
+avg_temp <-  daily_activity$daily_average[match(active_data$interval, daily_activity$interval)]
+active_data_imputed <- transform(active_data, steps = ifelse(is.na(active_data$steps), 
+                                                             yes = avg_temp, no = active_data$steps))
+head(active_data_imputed, 30)
+```
+
+```
+##        steps       date interval dayofweek
+## 1  1.7169811 2012-10-01        0    Monday
+## 2  0.3396226 2012-10-01        5    Monday
+## 3  0.1320755 2012-10-01       10    Monday
+## 4  0.1509434 2012-10-01       15    Monday
+## 5  0.0754717 2012-10-01       20    Monday
+## 6  2.0943396 2012-10-01       25    Monday
+## 7  0.5283019 2012-10-01       30    Monday
+## 8  0.8679245 2012-10-01       35    Monday
+## 9  0.0000000 2012-10-01       40    Monday
+## 10 1.4716981 2012-10-01       45    Monday
+## 11 0.3018868 2012-10-01       50    Monday
+## 12 0.1320755 2012-10-01       55    Monday
+## 13 0.3207547 2012-10-01      100    Monday
+## 14 0.6792453 2012-10-01      105    Monday
+## 15 0.1509434 2012-10-01      110    Monday
+## 16 0.3396226 2012-10-01      115    Monday
+## 17 0.0000000 2012-10-01      120    Monday
+## 18 1.1132075 2012-10-01      125    Monday
+## 19 1.8301887 2012-10-01      130    Monday
+## 20 0.1698113 2012-10-01      135    Monday
+## 21 0.1698113 2012-10-01      140    Monday
+## 22 0.3773585 2012-10-01      145    Monday
+## 23 0.2641509 2012-10-01      150    Monday
+## 24 0.0000000 2012-10-01      155    Monday
+## 25 0.0000000 2012-10-01      200    Monday
+## 26 0.0000000 2012-10-01      205    Monday
+## 27 1.1320755 2012-10-01      210    Monday
+## 28 0.0000000 2012-10-01      215    Monday
+## 29 0.0000000 2012-10-01      220    Monday
+## 30 0.1320755 2012-10-01      225    Monday
+```
+
 ## Are there differences in activity patterns between weekdays and weekends?
