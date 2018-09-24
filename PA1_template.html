@@ -223,6 +223,11 @@ plot(daily_activity$interval, daily_activity$daily_average, type = &quot;l&quot;
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
+<div id="calculate-and-report-the-total-number-of-missing-values-in-the-dataset-i.e.the-total-number-of-rows-with-nas" class="section level3">
+<h3>Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)</h3>
+<pre class="r"><code>missingvalues &lt;- sum(is.na(active_data$steps))</code></pre>
+<p>The total number of missing values in the dataset is 2304.</p>
+</div>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>

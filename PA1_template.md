@@ -136,7 +136,11 @@ The interval containing the max value is "835".  The value for that interval is 
 
 
 ## Imputing missing values
+### Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-
+```r
+missingvalues <- sum(is.na(active_data$steps))
+```
+The total number of missing values in the dataset is 2304.
 
 ## Are there differences in activity patterns between weekdays and weekends?
