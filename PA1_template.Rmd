@@ -90,12 +90,25 @@ The total number of missing values in the dataset is `r missingvalues`.
 ### Devise a strategy for filling in all of the missing values in the dataset.
 Create average template for all interval of the day.  Use the template to fill in any blanks for missing values.
 ```{r create_avg_template}
-#library(impute)
 avg_temp <-  daily_activity$daily_average[match(active_data$interval, daily_activity$interval)]
 active_data_imputed <- transform(active_data, steps = ifelse(is.na(active_data$steps), 
                                                              yes = avg_temp, no = active_data$steps))
-
-head(active_data_imputed, 30)
+imputed_total_steps <- active_data_imputed %>% group_by(date) %>% summarise (daily_steps = sum(steps))
 ```
+
+### Make a histogram of the total number of steps taken each day
+```{r plot_impute}
+hist(imputed_total_steps$daily_steps, col = "gray", xlab = "Total steps per day", 
+     main = "Total number of steps taken each day", breaks = nrow(imputed_total_steps)/3)
+abline(v=median(imputed_total_steps$daily_steps),lty=5, lwd=2, col="red")
+legend(legend="median","topleft",lty=5,lwd=2, col = "red")
+```
+
+### Calculate the mean and median total number of steps taken per day.
+```{r impute_mean_median}
+mean(imputed_total_steps$daily_steps)
+median(imputed_total_steps$daily_steps)
+```
+
 
 ## Are there differences in activity patterns between weekdays and weekends?
