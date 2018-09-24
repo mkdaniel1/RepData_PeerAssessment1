@@ -73,19 +73,65 @@ head(all_steps)
 ## 6 2012-10-06 00:00:00       15420
 ```
 
-## Plot number of steps per day
+### Plot number of steps per day
 
 ```r
 barplot(height = all_steps$daily_steps, names.arg=all_steps$date, cex.names=0.60, las=3, col = "green")
-abline(h=median(all_steps$daily_steps),lwd=3, col="blue")
-abline(h=mean(all_steps$daily_steps),lwd=3, col="red")
-legend("top",  c("blue","red"), c("median", "mean"), fill = c("blue", "red"))
+#steps_median <- median(all_steps$daily_steps, na.rm = TRUE)
+#steps_mean <- round(mean(all_steps$daily_steps, na.rm = TRUE),digits = 0)
+steps_median <- median(all_steps$daily_steps, na.rm = TRUE)
+steps_mean <- round(mean(all_steps$daily_steps, na.rm = TRUE),digits = 0)
+abline(h=steps_median,lwd=3, col="blue")
+abline(h=steps_mean,lwd=3, col="red")
+legend("topleft", c("median", "mean"), fill = c("blue", "red"))
 ```
 
 ![](PA1_template_files/figure-html/plot_steps-1.png)<!-- -->
 
+```r
+#legend("top", c("median", "mean"), c(steps_median, steps_mean), fill = c("blue", "red"))
+```
+
+### Histogram of the total number of steps taken each day
+#### (Removed all days with no activity)
+
+```r
+all_steps <- filter(all_steps, all_steps$daily_steps > 0)
+hist(all_steps$daily_steps, breaks = nrow(all_steps)/3,  main = "Total number of steps taken each day", 
+     xlab = "Total steps taken each day", col = "blue")
+abline(v=median(all_steps$daily_steps),lty=5, lwd=2, col="black")
+legend(legend="median","topleft",lty=5,lwd=2)
+```
+
+![](PA1_template_files/figure-html/plot_hist-1.png)<!-- -->
+
+### Calculate and report the mean and median of the total number of steps taken per day
+
+```r
+steps_mean <- as.integer(mean(all_steps$daily_steps, na.rm = TRUE))
+steps_median <- as.integer(median(all_steps$daily_steps, na.rm = TRUE))
+```
+The average (mean) number of steps taken per day is 10766 and the median number of steps per day is 10765.  
+
 
 ## What is the average daily activity pattern?
+### Time Series plot showing daily activity pattern
+
+```r
+daily_activity <- active_data %>% group_by(interval) %>% summarise(daily_average=mean(steps, na.rm = TRUE))
+plot(daily_activity$interval, daily_activity$daily_average, type = "l", col="purple", lwd = 2, xlab="Interval",
+     ylab="Average number of steps", main="Average Daily Activiy Pattern")
+```
+
+![](PA1_template_files/figure-html/time_plot-1.png)<!-- -->
+
+### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+```r
+max_interval <- filter(daily_activity,daily_average==max(daily_average))
+```
+
+The interval containing the max value is "835".  The value for that interval is "206.17" steps. 
 
 
 
