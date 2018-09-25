@@ -77,8 +77,6 @@ head(all_steps)
 
 ```r
 barplot(height = all_steps$daily_steps, names.arg=all_steps$date, cex.names=0.60, las=3, col = "green")
-#steps_median <- median(all_steps$daily_steps, na.rm = TRUE)
-#steps_mean <- round(mean(all_steps$daily_steps, na.rm = TRUE),digits = 0)
 steps_median <- median(all_steps$daily_steps, na.rm = TRUE)
 steps_mean <- round(mean(all_steps$daily_steps, na.rm = TRUE),digits = 0)
 abline(h=steps_median,lwd=3, col="blue")
@@ -87,10 +85,6 @@ legend("topleft", c("median", "mean"), fill = c("blue", "red"))
 ```
 
 ![](PA1_template_files/figure-html/plot_steps-1.png)<!-- -->
-
-```r
-#legend("top", c("median", "mean"), c(steps_median, steps_mean), fill = c("blue", "red"))
-```
 
 ### Histogram of the total number of steps taken each day
 #### (Removed all days with no activity)
@@ -182,5 +176,35 @@ median(imputed_total_steps$daily_steps)
 ## [1] 10766.19
 ```
 
+Imputing missing values on the  missing 2304 entries did not change the mean but it did raise the median to equal the mean.  
 
 ## Are there differences in activity patterns between weekdays and weekends?
+### Create a new factor variable in the dataset with two levels - "weekday" and "weekend"
+
+```r
+active_data_imputed$weektype <- sapply(active_data_imputed$date, function(x) {
+        if (weekdays(x) == "Saturday" | weekdays(x) =="Sunday") 
+                {y <- "Weekend"} else 
+                {y <- "Weekday"}
+                y
+        })
+table(active_data_imputed$weektype)
+```
+
+```
+## 
+## Weekday Weekend 
+##   12960    4608
+```
+
+### Make a panel plot containing a time series plot
+
+```r
+daily_active_data_imputed <- aggregate(steps~interval + weektype, active_data_imputed, mean)
+ggplot(data = daily_active_data_imputed, aes(x =interval, y = steps, col= weektype))  + 
+  geom_line() + 
+  labs(x="Interval", y ="Average number of steps", title="Average Daily Activiy Patterns") +
+  facet_wrap(~weektype, ncol = 1, nrow = 2)
+```
+
+![](PA1_template_files/figure-html/panel_plot-1.png)<!-- -->
